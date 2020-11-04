@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "673090474257",
+    "firebase_url": "https://oitipulab4.firebaseio.com",
+    "project_id": "oitipulab4",
+    "storage_bucket": "oitipulab4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673090474257:android:ea27b58dd91a9550fbbcb0",
+        "android_client_info": {
+          "package_name": "com.oitipu.lab4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673090474257-hbr508kkbsmtua5ctkee6poh3jrgpege.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSVf14gqQZP2n2MZehAGRsUwk9TVBn0dQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673090474257-hbr508kkbsmtua5ctkee6poh3jrgpege.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
