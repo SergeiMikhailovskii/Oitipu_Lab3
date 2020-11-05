@@ -11,6 +11,9 @@ class QuizQuestionFragment : Fragment(R.layout.layout_quiz_question) {
 
     private lateinit var binding: LayoutQuizQuestionBinding
 
+    var buttonClickCallback: ((String) -> Unit)? = null
+    var buttonSaveCallback: ((String) -> Unit)? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,7 +23,6 @@ class QuizQuestionFragment : Fragment(R.layout.layout_quiz_question) {
         return binding.root
     }
 
-    var buttonClickCallback: ((String) -> Unit)? = null
 
     fun setQuestionData(quizQuestion: QuizQuestion, currentScore: Int) {
         binding.btnFirst.apply {
@@ -49,6 +51,14 @@ class QuizQuestionFragment : Fragment(R.layout.layout_quiz_question) {
                 buttonClickCallback?.invoke(this.text.toString())
             }
             text = quizQuestion.fourth
+        }
+
+        binding.btnSave.setOnClickListener {
+            fragmentManager?.let { it1 -> EnterNameBottomSheetFragment().apply {
+                onSaveClick = {
+                    buttonSaveCallback?.invoke(it)
+                }
+            }.show(it1, "SAVE_DLG") }
         }
 
         binding.tvQuestion.text = quizQuestion.question

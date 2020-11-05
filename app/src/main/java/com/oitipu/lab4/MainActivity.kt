@@ -11,6 +11,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.oitipu.lab4.databinding.ActivityMainBinding
+import es.dmoral.toasty.Toasty
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,10 +29,11 @@ class MainActivity : AppCompatActivity() {
             buttonClickCallback = {
                 if (it == questions?.get(currentQuestionNumber)?.right) {
                     currentScore++
-                    Toast.makeText(context, "Right", Toast.LENGTH_SHORT).show()
+                    Toasty.success(requireContext(), "Right!", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Wrong", Toast.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show()
                 }
+
                 currentQuestionNumber++
 
                 if (currentQuestionNumber >= (questions?.size ?: 0)) {
@@ -42,12 +44,19 @@ class MainActivity : AppCompatActivity() {
                     this.updateFragmentData(question, currentScore)
                 }
             }
+            buttonSaveCallback = {
+                saveResult(it)
+            }
         }
 
         supportFragmentManager.beginTransaction().apply {
             add(R.id.fragment_layout, quizQuestionFragment)
         }.commit()
 
+        getQuestions(quizQuestionFragment)
+    }
+
+    private fun getQuestions(quizQuestionFragment: QuizQuestionFragment) {
         val ref = Firebase.database.reference
         ref.child("questions").addValueEventListener(object : ValueEventListener {
 
@@ -61,6 +70,30 @@ class MainActivity : AppCompatActivity() {
                 questions?.get(currentQuestionNumber)?.let {
                     quizQuestionFragment.setQuestionData(it, currentScore)
                 }
+            }
+
+        })
+    }
+
+    private fun saveResult(name: String) {
+        val ref = Firebase.database.reference
+        ref.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(MainActivity::class.simpleName, error.message)
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    val key = it.key
+                    val user = it.getValue<User>()
+                    if (user?.name == name) {
+                        ref.child("users").child(key ?: "")
+                            .updateChildren(mapOf(Pair("score", currentScore)))
+                        return
+                    }
+                }
+                ref.child("users").push().setValue(User(name, currentScore))
             }
 
         })
