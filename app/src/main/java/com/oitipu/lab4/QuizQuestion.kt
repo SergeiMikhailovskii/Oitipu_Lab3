@@ -5,6 +5,6 @@ data class QuizQuestion(
     val second: String? = null,
     val third: String? = null,
     val fourth: String? = null,
-    val right: Int? = null,
+    val right: String? = null,
     val question: String? = null
 )
