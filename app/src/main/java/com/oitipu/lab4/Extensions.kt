@@ -2,6 +2,8 @@ package com.oitipu.lab4
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 
 fun AppCompatActivity.replaceFragment(
     fragment: Fragment,
@@ -28,3 +30,8 @@ fun AppCompatActivity.replaceFragment(
 }
 
 fun Fragment.name(): String = this.javaClass.simpleName
+
+fun FirebaseAnalytics.sendEvent(event: String) =
+    this.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+        param(FirebaseAnalytics.Param.ITEM_NAME, event)
+    }
